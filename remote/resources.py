@@ -13,6 +13,7 @@ class EmployeeResource(ModelResource):
         resource_name = 'employees'
         allowed_methods = ('get',)
         include_resource_uri = False
+        max_limit = None
         filtering = {
             'cid': ALL,
             'name': ALL,
