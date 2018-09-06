@@ -6,18 +6,40 @@ from django.utils.encoding import python_2_unicode_compatible
 
 
 @python_2_unicode_compatible
+class Department(models.Model):
+
+    id = models.CharField(db_column="Id_Ccosto", primary_key=True, max_length=15)
+    name = models.TextField(db_column="Desc_Ccosto")
+
+    class Meta:
+        managed = False
+        db_table = "Centro_Costo"
+        verbose_name = "Department"
+        verbose_name_plural = "Departments"
+
+    def __str__(self):
+        return self.name
+
+
+@python_2_unicode_compatible
 class Employee(models.Model):
 
-    eid = models.CharField(verbose_name='id', db_column='Id_Empleado', primary_key=True, max_length=15)
-    fid = models.CharField(verbose_name='expediente', db_column='Id_Expediente', max_length=15)
-    cid = models.CharField(verbose_name='CI', db_column='No_CI', max_length=15)
+    id = models.CharField(db_column="Id_Empleado", primary_key=True, max_length=15)
+    fid = models.CharField(db_column="Id_Expediente", max_length=15)
+    cid = models.CharField(db_column="No_CI", max_length=15)
 
-    name = models.TextField(verbose_name='nombre', db_column='Nombre')
-    surname1 = models.TextField(verbose_name='Primer apellido', db_column='Apellido_1')
-    surname2 = models.TextField(verbose_name='segundo apellido', db_column='Apellido_2')
+    name = models.TextField(db_column="Nombre")
+    surname1 = models.TextField(db_column="Apellido_1")
+    surname2 = models.TextField(db_column="Apellido_2")
 
-    active = models.NullBooleanField(verbose_name='alta', db_column='Alta')
-    inactive = models.NullBooleanField(verbose_name='baja', db_column='Baja')
+    active = models.NullBooleanField(db_column="Alta")
+    inactive = models.NullBooleanField(db_column="Baja")
+
+    phone = models.TextField(db_column="Telefono_Particular")
+
+    department = models.ForeignKey("Department", db_column="Id_CCosto", blank=True, null=True)
+
+    # id_ccosto = models.CharField(db_column='Id_CCosto', max_length=10)  # Field name made lowercase.
 
     # direccion = models.TextField(db_column='Direccion')  # Field name made lowercase.
     # ciudad = models.TextField(db_column='Ciudad')  # Field name made lowercase.
@@ -25,8 +47,6 @@ class Employee(models.Model):
     # codigo_postal = models.TextField(db_column='Codigo_Postal')  # Field name made lowercase.
     # pais = models.TextField(db_column='Pais')  # Field name made lowercase.
     # exttelef = models.CharField(db_column='Exttelef', max_length=15)  # Field name made lowercase.
-    # telefono_particular = models.TextField(db_column='Telefono_Particular')  # Field name made lowercase.
-    # id_ccosto = models.CharField(db_column='Id_CCosto', max_length=10)  # Field name made lowercase.
     # fecha_nacimiento = models.DateTimeField(db_column='Fecha_Nacimiento')  # Field name made lowercase.
     # nota = models.TextField(db_column='Nota')  # Field name made lowercase.
     # tipo_pago = models.SmallIntegerField(db_column='Tipo_Pago')  # Field name made lowercase.
@@ -134,9 +154,9 @@ class Employee(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'Empleados_Gral'
-        verbose_name = 'Employee'
-        verbose_name_plural = 'Employees'
+        db_table = "Empleados_Gral"
+        verbose_name = "Employee"
+        verbose_name_plural = "Employees"
 
     def __str__(self):
-    	return ' '.join([self.name, self.surname1, self.surname2]).strip()
+        return " ".join([self.name, self.surname1, self.surname2]).strip()
