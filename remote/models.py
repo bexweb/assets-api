@@ -39,6 +39,8 @@ class Employee(models.Model):
 
     department = models.ForeignKey("Department", db_column="Id_CCosto", blank=True, null=True)
 
+    gender = models.CharField(db_column="Sexo", max_length=1)  # Field name made lowercase.
+
     # id_ccosto = models.CharField(db_column='Id_CCosto', max_length=10)  # Field name made lowercase.
 
     # direccion = models.TextField(db_column='Direccion')  # Field name made lowercase.
@@ -74,7 +76,7 @@ class Employee(models.Model):
     # pantalon = models.CharField(db_column='Pantalon', max_length=5)  # Field name made lowercase.
     # camisa = models.CharField(db_column='Camisa', max_length=5)  # Field name made lowercase.
     # zapato = models.CharField(db_column='Zapato', max_length=5)  # Field name made lowercase.
-    # sexo = models.CharField(db_column='Sexo', max_length=1)  # Field name made lowercase.
+
     # color_piel = models.SmallIntegerField(db_column='Color_Piel')  # Field name made lowercase.
     # color_pelo = models.SmallIntegerField(db_column='Color_Pelo')  # Field name made lowercase.
     # estatura = models.DecimalField(db_column='Estatura', max_digits=7, decimal_places=2)  # Field name made lowercase.
