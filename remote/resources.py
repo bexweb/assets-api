@@ -23,12 +23,83 @@ class DepartmentResource(ModelResource):
         return bundle.data["name"].strip().upper()
 
 
+class CategoryResource(ModelResource):
+
+    class Meta:
+        queryset = models.Category.objects.using("rh").all()
+        resource_name = "category"
+        allowed_methods = ("get",)
+        include_resource_uri = False
+        max_limit = None
+        filtering = {"id": ALL, "desc_category_di": ALL}
+
+    def dehydrate_id(self, bundle):
+        return bundle.data["id"].strip()
+
+    def dehydrate_desc_category_di(self, bundle):
+        return bundle.data["desc_category_di"].upper()
+
+
+class SpecialtyResource(ModelResource):
+
+    class Meta:
+        queryset = models.Specialty.objects.using("rh").all()
+        resource_name = "specialty"
+        allowed_methods = ("get",)
+        include_resource_uri = False
+        max_limit = None
+        filtering = {"id": ALL, "name": ALL}
+
+    def dehydrate_id(self, bundle):
+        return bundle.data["id"].strip()
+
+    def dehydrate_name(self, bundle):
+        return bundle.data["name"].upper()
+
+
+class ProfessionResource(ModelResource):
+    specialty = fields.ForeignKey(SpecialtyResource, "specialty", full=True, null=True)
+
+    class Meta:
+        queryset = models.Profession.objects.using("rh").select_related("specialty")
+        resource_name = "profession"
+        allowed_methods = ("get",)
+        include_resource_uri = False
+        max_limit = None
+        filtering = {"id": ALL, "name": ALL}
+
+    def dehydrate_id(self, bundle):
+        return bundle.data["id"].strip()
+
+    def dehydrate_name(self, bundle):
+        return bundle.data["name"].upper()
+
+
+class ChargeResource(ModelResource):
+
+    class Meta:
+        queryset = models.Charge.objects.using("rh").all()
+        resource_name = "charge"
+        allowed_methods = ("get",)
+        include_resource_uri = False
+        max_limit = None
+        filtering = {"id": ALL, "name": ALL}
+
+    def dehydrate_id(self, bundle):
+        return bundle.data["id"].strip()
+
+    def dehydrate_name(self, bundle):
+        return bundle.data["name"].upper()
+
 class EmployeeResource(ModelResource):
 
+    category = fields.ForeignKey(CategoryResource, "category", full=True, null=True)
+    charge = fields.ForeignKey(ChargeResource, "charge", full=True, null=True)
+    profession = fields.ForeignKey(ProfessionResource, "profession", full=True, null=True)
     department = fields.ForeignKey(DepartmentResource, "department", full=True, null=True)
 
     class Meta:
-        queryset = models.Employee.objects.using("rh").select_related("department")
+        queryset = models.Employee.objects.using("rh").select_related("category", "charge", "profession", "department")
         resource_name = "employees"
         allowed_methods = ("get",)
         include_resource_uri = False
@@ -52,3 +123,27 @@ class EmployeeResource(ModelResource):
 
     def dehydrate_cid(self, bundle):
         return bundle.data["cid"].strip()
+
+    def dehydrate_address(self, bundle):
+        return bundle.data["address"].strip()
+
+    def dehydrate_city(self, bundle):
+        return bundle.data["city"].strip()
+
+    def dehydrate_land(self, bundle):
+        return bundle.data["land"].strip()
+
+    def dehydrate_postal_code(self, bundle):
+        return bundle.data["postal_code"].strip()
+
+    def dehydrate_country(self, bundle):
+        return bundle.data["country"].strip()
+
+    def dehydrate_date_contract(self, bundle):
+        return bundle.data["date_contract"]
+
+    def dehydrate_id_cargo(self, bundle):
+        return bundle.data["id_cargo"].strip()
+
+    def dehydrate_id_categoria(self, bundle):
+        return bundle.data["id_categoria"].strip()
