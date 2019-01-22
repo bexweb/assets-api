@@ -24,10 +24,9 @@ class DepartmentResource(ModelResource):
 
 
 class CategoryResource(ModelResource):
-
     class Meta:
         queryset = models.Category.objects.using("rh").all()
-        resource_name = "category"
+        resource_name = "categories"
         allowed_methods = ("get",)
         include_resource_uri = False
         max_limit = None
@@ -41,10 +40,9 @@ class CategoryResource(ModelResource):
 
 
 class SpecialtyResource(ModelResource):
-
     class Meta:
         queryset = models.Specialty.objects.using("rh").all()
-        resource_name = "specialty"
+        resource_name = "specialties"
         allowed_methods = ("get",)
         include_resource_uri = False
         max_limit = None
@@ -62,7 +60,7 @@ class ProfessionResource(ModelResource):
 
     class Meta:
         queryset = models.Profession.objects.using("rh").select_related("specialty")
-        resource_name = "profession"
+        resource_name = "professions"
         allowed_methods = ("get",)
         include_resource_uri = False
         max_limit = None
@@ -75,11 +73,10 @@ class ProfessionResource(ModelResource):
         return bundle.data["name"].upper()
 
 
-class ChargeResource(ModelResource):
-
+class PositionResource(ModelResource):
     class Meta:
-        queryset = models.Charge.objects.using("rh").all()
-        resource_name = "charge"
+        queryset = models.Position.objects.using("rh").all()
+        resource_name = "positions"
         allowed_methods = ("get",)
         include_resource_uri = False
         max_limit = None
@@ -90,16 +87,19 @@ class ChargeResource(ModelResource):
 
     def dehydrate_name(self, bundle):
         return bundle.data["name"].upper()
+
 
 class EmployeeResource(ModelResource):
 
     category = fields.ForeignKey(CategoryResource, "category", full=True, null=True)
-    charge = fields.ForeignKey(ChargeResource, "charge", full=True, null=True)
+    position = fields.ForeignKey(PositionResource, "position", full=True, null=True)
     profession = fields.ForeignKey(ProfessionResource, "profession", full=True, null=True)
     department = fields.ForeignKey(DepartmentResource, "department", full=True, null=True)
 
     class Meta:
-        queryset = models.Employee.objects.using("rh").select_related("category", "charge", "profession", "department")
+        queryset = models.Employee.objects.using("rh").select_related(
+            "category", "position", "profession", "department"
+        )
         resource_name = "employees"
         allowed_methods = ("get",)
         include_resource_uri = False

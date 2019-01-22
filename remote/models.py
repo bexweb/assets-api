@@ -7,15 +7,16 @@ from django.utils.encoding import python_2_unicode_compatible
 
 @python_2_unicode_compatible
 class Category(models.Model):
-    id = models.CharField(db_column='Id_Categoria_DI', max_length=5, primary_key=True)  # Field name made lowercase.
-    description = models.CharField(db_column='Desc_Categoria_DI', max_length=50)  # Field name made lowercase.
-    #identification_di = models.CharField(db_column='Identificacion_DI', max_length=2)  # Field name made lowercase.
-    classification = models.CharField(db_column='Clasificacion_DI', max_length=1)  # Field name made lowercase.
-    #years_di = models.SmallIntegerField(db_column='Anos_DI')  # Field name made lowercase.
+
+    id = models.CharField(db_column="Id_Categoria_DI", max_length=5, primary_key=True)  # Field name made lowercase.
+    description = models.CharField(db_column="Desc_Categoria_DI", max_length=50)  # Field name made lowercase.
+    # identification_di = models.CharField(db_column='Identificacion_DI', max_length=2)  # Field name made lowercase.
+    classification = models.CharField(db_column="Clasificacion_DI", max_length=1)  # Field name made lowercase.
+    # years_di = models.SmallIntegerField(db_column='Anos_DI')  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'RH_Categorias_Docente_Invest'
+        db_table = "RH_Categorias_Docente_Invest"
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
@@ -24,13 +25,18 @@ class Category(models.Model):
 
 
 @python_2_unicode_compatible
-class Charge(models.Model):
-    id = models.CharField(db_column='Id_Cargo', max_length=5, primary_key=True)  # Field name made lowercase.
-    nameCharge = models.CharField(db_column='Desc_Cargo', max_length=120)  # Field name made lowercase.
-    nameCategory = models.CharField(db_column='Desc_Categoria', max_length=25)  # Field name made lowercase.
-    nameSubcategory = models.CharField(db_column='Desc_Subcategoria', max_length=50)  # Field name made lowercase.
-    basicSalary = models.DecimalField(db_column='Salario_Basico', max_digits=10, decimal_places=4)  # Field name made lowercase. max_digits and decimal_places have been guessed, as this database handles decimal fields as float
-    antiquity = models.DecimalField(db_column='Antiguedad', max_digits=10, decimal_places=4)  # Field name made lowercase. max_digits and decimal_places have been guessed, as this database handles decimal fields as float
+class Position(models.Model):
+
+    id = models.CharField(db_column="Id_Cargo", max_length=5, primary_key=True)  # Field name made lowercase.
+    name = models.CharField(db_column="Desc_Cargo", max_length=120)  # Field name made lowercase.
+    category_name = models.CharField(db_column="Desc_Categoria", max_length=25)  # Field name made lowercase.
+    subcategory_name = models.CharField(db_column="Desc_Subcategoria", max_length=50)  # Field name made lowercase.
+    basic_wage = models.DecimalField(
+        db_column="Salario_Basico", max_digits=10, decimal_places=4
+    )  # Field name made lowercase. max_digits and decimal_places have been guessed, as this database handles decimal fields as float
+    seniority = models.DecimalField(
+        db_column="Antiguedad", max_digits=10, decimal_places=4
+    )  # Field name made lowercase. max_digits and decimal_places have been guessed, as this database handles decimal fields as float
 
     # rgrupo = models.CharField(db_column='RGrupo', max_length=5)  # Field name made lowercase.
     # ngrupo = models.CharField(db_column='NGrupo', max_length=3)  # Field name made lowercase.
@@ -59,9 +65,9 @@ class Charge(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'RH_Cargos'
-        verbose_name = "Charge"
-        verbose_name_plural = "Charges"
+        db_table = "RH_Cargos"
+        verbose_name = "Position"
+        verbose_name_plural = "Positions"
 
     def __str__(self):
         return " ".join([self.id, self.name]).strip()
@@ -69,12 +75,15 @@ class Charge(models.Model):
 
 @python_2_unicode_compatible
 class Specialty(models.Model):
-    id = models.CharField(db_column='Id_Especialidad', max_length=3, primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='Desc_Especialidad', max_length=25)  # Field name made lowercase.
+
+    id = models.CharField(db_column="Id_Especialidad", max_length=3, primary_key=True)  # Field name made lowercase.
+    name = models.CharField(db_column="Desc_Especialidad", max_length=25)  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'RH_Profesiones_General'
+        db_table = "RH_Profesiones_General"
+        verbose_name = "Specialty"
+        verbose_name_plural = "Specialties"
 
     def __str__(self):
         return " ".join([self.id, self.name]).strip()
@@ -83,13 +92,13 @@ class Specialty(models.Model):
 @python_2_unicode_compatible
 class Profession(models.Model):
     specialty = models.ForeignKey("Specialty", db_column="Id_Especialidad", blank=True, null=True)
-    id = models.CharField(db_column='Id_Profesion', max_length=5, primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='Desc_Profesion', max_length=80)  # Field name made lowercase.
-    #id_especialidad = models.CharField(db_column='Id_Especialidad', max_length=3)  # Field name made lowercase.
+    id = models.CharField(db_column="Id_Profesion", max_length=5, primary_key=True)  # Field name made lowercase.
+    name = models.CharField(db_column="Desc_Profesion", max_length=80)  # Field name made lowercase.
+    # id_especialidad = models.CharField(db_column='Id_Especialidad', max_length=3)  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'RH_Profesiones'
+        db_table = "RH_Profesiones"
         verbose_name = "Profession"
         verbose_name_plural = "Professions"
 
@@ -115,26 +124,32 @@ class Department(models.Model):
 
 @python_2_unicode_compatible
 class Employee(models.Model):
+
     id = models.CharField(db_column="Id_Empleado", primary_key=True, max_length=15)
     fid = models.CharField(db_column="Id_Expediente", max_length=15)
     cid = models.CharField(db_column="No_CI", max_length=15)
+
     name = models.TextField(db_column="Nombre")
     surname1 = models.TextField(db_column="Apellido_1")
     surname2 = models.TextField(db_column="Apellido_2")
+
     active = models.NullBooleanField(db_column="Alta")
     inactive = models.NullBooleanField(db_column="Baja")
+
     phone = models.TextField(db_column="Telefono_Particular")
     department = models.ForeignKey("Department", db_column="Id_CCosto", blank=True, null=True)
 
     category = models.ForeignKey("Category", db_column="Id_Categoria_DI", blank=True, null=True)
-    charge = models.ForeignKey("Charge", db_column="Id_Cargo", blank=True, null=True)
-    profession = models.ForeignKey("Profession", db_column='Id_Profesion', max_length=5, blank=True, null=True)
-    address = models.TextField(db_column='Direccion')  # Field name made lowercase.
-    city = models.TextField(db_column='Ciudad')  # Field name made lowercase.
-    land = models.TextField(db_column='Region')  # Field name made lowercase.
-    postal_code = models.TextField(db_column='Codigo_Postal')  # Field name made lowercase.
-    country = models.TextField(db_column='Pais')  # Field name made lowercase.
-    date_contract = models.DateTimeField(db_column='Fecha_Contratacion')  # Field name made lowercase.
+    position = models.ForeignKey("Position", db_column="Id_Cargo", blank=True, null=True)
+    profession = models.ForeignKey("Profession", db_column="Id_Profesion", max_length=5, blank=True, null=True)
+
+    address = models.TextField(db_column="Direccion")  # Field name made lowercase.
+    city = models.TextField(db_column="Ciudad")  # Field name made lowercase.
+    region = models.TextField(db_column="Region")  # Field name made lowercase.
+    postal_code = models.TextField(db_column="Codigo_Postal")  # Field name made lowercase.
+    country = models.TextField(db_column="Pais")  # Field name made lowercase.
+
+    date_hired = models.DateTimeField(db_column="Fecha_Contratacion")  # Field name made lowercase.
 
     # id_profesion = models.CharField(db_column='Id_Profesion', max_length=5)  # Field name made lowercase.
     # id_category = models.CharField(db_column='Id_Categoria', max_length=5)  # Field name made lowercase.
@@ -148,7 +163,7 @@ class Employee(models.Model):
     # tarifa_horaria_con_reporte = models.NullBooleanField(db_column='Tarifa_Horaria_con_Reporte')  # Field name made lowercase.
     # calendario = models.CharField(db_column='Calendario', max_length=3)  # Field name made lowercase.
     # descontarsabado = models.NullBooleanField(db_column='DescontarSabado')  # Field name made lowercase.
-    #id_charge = models.CharField(db_column='Id_Cargo', max_length=5)  # Field name made lowercase.
+    # id_cargo = models.CharField(db_column='Id_Cargo', max_length=5)  # Field name made lowercase.
     # ngrupo = models.SmallIntegerField(db_column='NGrupo')  # Field name made lowercase.
     # fecha_cargo = models.DateTimeField(db_column='Fecha_Cargo')  # Field name made lowercase.
     # asignacion_por_cargo = models.NullBooleanField(db_column='Asignacion_por_Cargo')  # Field name made lowercase.
