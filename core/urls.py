@@ -10,6 +10,7 @@ from remote import resources
 v1_api = Api(api_name="v1")
 
 v1_api.register(resources.EmployeeResource())
+v1_api.register(resources.AreaResource())
 v1_api.register(resources.DepartmentResource())
 v1_api.register(resources.PositionResource())
 v1_api.register(resources.CategoryResource())

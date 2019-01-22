@@ -105,7 +105,7 @@ class Profession(models.Model):
 
 
 @python_2_unicode_compatible
-class Department(models.Model):
+class Area(models.Model):
 
     id = models.CharField(db_column="Id_Ccosto", primary_key=True, max_length=15)
     name = models.TextField(db_column="Desc_Ccosto")
@@ -113,6 +113,22 @@ class Department(models.Model):
     class Meta:
         managed = False
         db_table = "Centro_Costo"
+        verbose_name = "Area"
+        verbose_name_plural = "Areas"
+
+    def __str__(self):
+        return self.name
+
+
+@python_2_unicode_compatible
+class Department(models.Model):
+
+    id = models.CharField(db_column="Id_Direccion", primary_key=True, max_length=15)
+    name = models.TextField(db_column="Desc_Direccion")
+
+    class Meta:
+        managed = False
+        db_table = "RH_Unidades_Organizativas"
         verbose_name = "Department"
         verbose_name_plural = "Departments"
 
@@ -135,7 +151,8 @@ class Employee(models.Model):
     inactive = models.NullBooleanField(db_column="Baja")
 
     phone = models.TextField(db_column="Telefono_Particular")
-    department = models.ForeignKey("Department", db_column="Id_CCosto", blank=True, null=True)
+    area = models.ForeignKey("Area", db_column="Id_CCosto", blank=True, null=True)
+    department = models.ForeignKey("Department", db_column="Id_Direccion", blank=True, null=True)
 
     category = models.ForeignKey("Category", db_column="Id_Categoria_DI", blank=True, null=True)
     position = models.ForeignKey("Position", db_column="Id_Cargo", blank=True, null=True)

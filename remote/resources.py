@@ -7,9 +7,25 @@ from tastypie.resources import ModelResource, ALL
 from . import models
 
 
+class AreaResource(ModelResource):
+    class Meta:
+        queryset = models.Area.objects.using("int").all()
+        resource_name = "areas"
+        allowed_methods = ("get",)
+        include_resource_uri = False
+        max_limit = None
+        filtering = {"id": ALL, "name": ALL}
+
+    def dehydrate_id(self, bundle):
+        return bundle.data["id"].strip()
+
+    def dehydrate_name(self, bundle):
+        return bundle.data["name"].strip().upper()
+
+
 class DepartmentResource(ModelResource):
     class Meta:
-        queryset = models.Department.objects.using("int").all()
+        queryset = models.Department.objects.using("rh").all()
         resource_name = "departments"
         allowed_methods = ("get",)
         include_resource_uri = False
@@ -86,14 +102,16 @@ class PositionResource(ModelResource):
 
 class EmployeeResource(ModelResource):
 
+    area = fields.ForeignKey(AreaResource, "area", full=True, null=True)
+    department = fields.ForeignKey(DepartmentResource, "department", full=True, null=True)
+
     category = fields.ForeignKey(CategoryResource, "category", full=True, null=True)
     position = fields.ForeignKey(PositionResource, "position", full=True, null=True)
     profession = fields.ForeignKey(ProfessionResource, "profession", full=True, null=True)
-    department = fields.ForeignKey(DepartmentResource, "department", full=True, null=True)
 
     class Meta:
         queryset = models.Employee.objects.using("rh").select_related(
-            "category", "position", "profession", "department"
+            "area", "department", "category", "position", "profession"
         )
         resource_name = "employees"
         allowed_methods = ("get",)
