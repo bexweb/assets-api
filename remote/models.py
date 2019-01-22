@@ -89,7 +89,9 @@ class Specialty(models.Model):
 
 @python_2_unicode_compatible
 class Profession(models.Model):
+
     specialty = models.ForeignKey("Specialty", db_column="Id_Especialidad", blank=True, null=True)
+
     id = models.CharField(db_column="Id_Profesion", max_length=5, primary_key=True)
     name = models.CharField(db_column="Desc_Profesion", max_length=80)
     # id_especialidad = models.CharField(db_column='Id_Especialidad', max_length=3)

@@ -49,8 +49,8 @@ class CategoryResource(ModelResource):
     def dehydrate_id(self, bundle):
         return bundle.data["id"].strip()
 
-    def dehydrate_desc_category_di(self, bundle):
-        return bundle.data["desc_category_di"].upper()
+    def dehydrate_description(self, bundle):
+        return bundle.data["description"].upper()
 
 
 class SpecialtyResource(ModelResource):
@@ -69,6 +69,7 @@ class SpecialtyResource(ModelResource):
 
 
 class ProfessionResource(ModelResource):
+
     specialty = fields.ForeignKey(SpecialtyResource, "specialty", full=True, null=True)
 
     class Meta:
@@ -111,7 +112,7 @@ class EmployeeResource(ModelResource):
 
     class Meta:
         queryset = models.Employee.objects.using("rh").select_related(
-            "area", "department", "category", "position", "profession"
+            "area", "department", "category", "position", "profession", "profession__specialty"
         )
         resource_name = "employees"
         allowed_methods = ("get",)
@@ -142,20 +143,11 @@ class EmployeeResource(ModelResource):
     def dehydrate_city(self, bundle):
         return bundle.data["city"].strip()
 
-    def dehydrate_land(self, bundle):
-        return bundle.data["land"].strip()
+    def dehydrate_region(self, bundle):
+        return bundle.data["region"].strip()
 
     def dehydrate_postal_code(self, bundle):
         return bundle.data["postal_code"].strip()
 
     def dehydrate_country(self, bundle):
         return bundle.data["country"].strip()
-
-    def dehydrate_date_contract(self, bundle):
-        return bundle.data["date_contract"]
-
-    def dehydrate_id_cargo(self, bundle):
-        return bundle.data["id_cargo"].strip()
-
-    def dehydrate_id_categoria(self, bundle):
-        return bundle.data["id_categoria"].strip()
