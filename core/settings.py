@@ -100,4 +100,4 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-API_LIMIT_PER_PAGE = 0
+API_LIMIT_PER_PAGE = 50

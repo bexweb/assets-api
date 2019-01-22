@@ -13,7 +13,6 @@ class DepartmentResource(ModelResource):
         resource_name = "departments"
         allowed_methods = ("get",)
         include_resource_uri = False
-        max_limit = None
         filtering = {"id": ALL, "name": ALL}
 
     def dehydrate_id(self, bundle):
@@ -29,7 +28,6 @@ class CategoryResource(ModelResource):
         resource_name = "categories"
         allowed_methods = ("get",)
         include_resource_uri = False
-        max_limit = None
         filtering = {"id": ALL, "desc_category_di": ALL}
 
     def dehydrate_id(self, bundle):
@@ -45,7 +43,6 @@ class SpecialtyResource(ModelResource):
         resource_name = "specialties"
         allowed_methods = ("get",)
         include_resource_uri = False
-        max_limit = None
         filtering = {"id": ALL, "name": ALL}
 
     def dehydrate_id(self, bundle):
@@ -63,7 +60,6 @@ class ProfessionResource(ModelResource):
         resource_name = "professions"
         allowed_methods = ("get",)
         include_resource_uri = False
-        max_limit = None
         filtering = {"id": ALL, "name": ALL}
 
     def dehydrate_id(self, bundle):
@@ -79,7 +75,6 @@ class PositionResource(ModelResource):
         resource_name = "positions"
         allowed_methods = ("get",)
         include_resource_uri = False
-        max_limit = None
         filtering = {"id": ALL, "name": ALL}
 
     def dehydrate_id(self, bundle):
@@ -103,7 +98,6 @@ class EmployeeResource(ModelResource):
         resource_name = "employees"
         allowed_methods = ("get",)
         include_resource_uri = False
-        max_limit = None
         filtering = {"cid": ALL, "name": ALL, "surname1": ALL, "surname2": ALL}
 
     def dehydrate_name(self, bundle):
