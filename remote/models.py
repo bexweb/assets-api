@@ -148,6 +148,7 @@ class Employee(models.Model):
     name = models.TextField(db_column="Nombre")
     surname1 = models.TextField(db_column="Apellido_1")
     surname2 = models.TextField(db_column="Apellido_2")
+    gender = models.CharField(db_column="Sexo", max_length=1)
 
     active = models.NullBooleanField(db_column="Alta")
     inactive = models.NullBooleanField(db_column="Baja")
@@ -198,7 +199,6 @@ class Employee(models.Model):
     # pantalon = models.CharField(db_column='Pantalon', max_length=5)
     # camisa = models.CharField(db_column='Camisa', max_length=5)
     # zapato = models.CharField(db_column='Zapato', max_length=5)
-    # sexo = models.CharField(db_column='Sexo', max_length=1)
     # color_piel = models.SmallIntegerField(db_column='Color_Piel')
     # color_pelo = models.SmallIntegerField(db_column='Color_Pelo')
     # estatura = models.DecimalField(db_column='Estatura', max_digits=7, decimal_places=2)
